@@ -1,0 +1,96 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+      <h1 style="text-align: center">Employee</h1><br>
+      <div class="row" [hidden]="!deleteMessage">
+           
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                        <div class="alert alert-info alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong>Employee Data Deleted</strong>
+                        </div>
+                </div>
+                <div class="col-sm-4"></div>
+        </div>           
+    </div>
+
+  
+  <div class="panel-body">
+      <table  class="table table-hover table-sm" datatable [dtOptions]="dtOptions"
+      [dtTrigger]="dtTrigger"  >
+          <thead class="thead-light">
+              <tr>
+                  <th>Employee Name</th>
+                  <th>Employee Email</th>
+                  <th>Employee Branch</th>
+                  <th>Action</th>
+                  
+              </tr>
+          </thead>
+          <tbody>
+               <tr *ngFor="let employee of employees ">
+                  <td>{{employee.employee_name}}</td>
+                  <td>{{employee.employee_email}}</td>
+                  <td>{{employee.employee_branch}}</td>
+                  <td><button (click)="deleteEmployee(employee.employee_id)" class='btn btn-primary'><i class="fa fa-futboll-0">Delete</i></button>&nbsp;
+                    <button (click)="updateEmployee(employee.employee_id)" class='btn btn-info'
+                    data-toggle="modal" data-target="#myModal">Update</button>
+                  </td>
+                </tr> 
+          </tbody><br>
+      </table>
+  </div>
+</div> 
+
+<div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+                <form [formGroup]="employeeupdateform" #updemp (ngSubmit)="updateEmp(updemp)">
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title" style="text-align: center">Update Employee</h4>
+              
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body" *ngFor="let employee of employeelist " >
+                <div [hidden]="isupdated">
+
+                    <input type="hidden" class="form-control"  formControlName="employee_id" [(ngModel)]="employee.employee_id">
+                            <div class="form-group">
+                                <label for="name">Employee Name</label>
+                                <input type="text" class="form-control"  formControlName="employee_name" [(ngModel)]="employee.employee_name"  >
+                            </div>
+                    
+                            <div class="form-group">
+                                <label for="name">Employee Email</label>
+                                <input type="text" class="form-control" formControlName="employee_email" [(ngModel)]="employee.employee_email">
+                            </div>
+                    
+                            <div class="form-group">
+                                <label for="name">Employee Branch</label>
+                                  <select class="form-control" formControlName="employee_branch" required>                                   
+                                    <option value="Developer" [selected]="'Developer' == employee.employee_branch">Developer</option>
+                                    <option value="Tester" [selected]="'Tester' == employee.employee_branch">Tester</option>
+                                    <option value="HR" [selected]="'HR' == employee.employee_branch" >HR</option>
+                                    <option value="IT-Recuriter" [selected]="'IT-Recuriter' == employee.employee_branch">IT-Recuriter</option>
+                                  </select>    
+                                                             
+                            </div>                   
+                  </div>  
+                  <div [hidden]="!isupdated">
+                      <h4>Employee Detail Updated!</h4>
+                  </div>        
+                    
+            </div>
+            
+            <!-- Modal footer -->
+            <div class="modal-footer" >
+              <button type="submit" class="btn btn-success" [hidden]="isupdated">Update</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="changeisUpdate()">Close</button>
+            </div>
+            
+        </form>
+          </div>
+        </div>
+      </div>
